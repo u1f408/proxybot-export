@@ -1,0 +1,432 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://plural.horse/proxybot/export-v1.schema.json",
+    "title": "Proxy Bot Unified Export Format (DRAFT v1)",
+    "description": "A unified export format for Discord message proxying bots",
+
+    "type": "object",
+    "required": [
+        "$schema",
+        "metadata",
+        "profile",
+        "members",
+        "groups"
+    ],
+
+    "properties": {
+        "$schema": {
+            "description": "JSON Schema URL (must link to this schema for file versioning purposes)",
+            "type": "string",
+            "const": "https://plural.horse/proxybot/export-v1.schema.json"
+        },
+
+        "metadata": {
+            "title": "ExportMetadata",
+            "description": "Metadata for this export",
+
+            "type": "object",
+            "required": [
+                "generator"
+            ],
+
+            "properties": {
+                "generator": {
+                    "description": "Name of the bot (or other tool) which generated this export",
+                    "type": "string",
+                    "examples": [
+                        "PluralKit"
+                    ]
+                },
+                "exported_at": {
+                    "description": "Timestamp of this export's generation",
+                    "type": "string",
+                    "format": "date-time",
+                    "examples": [
+                        "2025-05-21T10:01:42+0000"
+                    ]
+                }
+            }
+        },
+
+        "profile": {
+            "title": "Profile",
+            "description": "Overarching user profile (i.e. a PluralKit \"system\")",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "name": {
+                    "description": "Profile name",
+                    "type": ["string", "null"],
+                    "examples": [
+                        "the Irises"
+                    ]
+                },
+
+                "avatar_url": {
+                    "description": "URL of profile avatar image",
+                    "type": ["string", "null"],
+                    "format": "uri",
+                    "examples": [
+                        "https://example.com/avatar.webp"
+                    ]
+                },
+
+                "banner_url": {
+                    "description": "URL of profile banner image",
+                    "type": ["string", "null"],
+                    "format": "uri",
+                    "examples": [
+                        "https://example.com/banner.webp"
+                    ]
+                },
+
+                "color": {
+                    "description": "Profile color code (as a lowercase hexadecimal value, no leading \"#\")",
+                    "type": ["string", "null"],
+                    "pattern": "^[0-9a-f]{6}$",
+                    "examples": [
+                        "358a94"
+                    ]
+                },
+
+                "description": {
+                    "description": "Profile description",
+                    "type": ["string", "null"]
+                },
+
+                "created": {
+                    "type": "string",
+                    "format": "date-time",
+                    "examples": [
+                        "2025-04-20T20:30:00+12:00"
+                    ]
+                },
+
+                "vendor": {
+                    "$ref": "#/$defs/vendor"
+                }
+            }
+        },
+
+        "members": {
+            "description": "Webhook profiles (i.e. PluralKit \"members\" / Tupperbox \"tuppers\" / Octocon \"alters\")",
+            "type": "array",
+            "items": {
+                "title": "Member",
+                "description": "A single webhook profile (i.e. a PluralKit \"member\" / Tupperbox \"tupper\" / Octocon \"alter\")",
+                "type": "object",
+                "unevaluatedProperties": false,
+                "required": [
+                    "id",
+                    "name",
+                    "brackets"
+                ],
+
+                "properties": {
+                    "id": {
+                        "description": "Unique ID for the member",
+                        "type": ["string", "number"],
+                        "examples": [
+                            "360130c3-8964-4f57-a46e-e973397bf309",
+                            312
+                        ]
+                    },
+
+                    "name": {
+                        "description": "Member name",
+                        "type": "string",
+                        "examples": [
+                            "Eris"
+                        ]
+                    },
+
+                    "display_name": {
+                        "description": "Member nickname / display name",
+                        "type": ["string", "null"],
+                        "examples": [
+                            null,
+                            "! Eris"
+                        ]
+                    },
+
+                    "avatar_url": {
+                        "description": "URL of member avatar image",
+                        "type": ["string", "null"],
+                        "format": "uri",
+                        "examples": [
+                            "https://example.com/avatar.webp"
+                        ]
+                    },
+
+                    "banner_url": {
+                        "description": "URL of member banner image",
+                        "type": ["string", "null"],
+                        "format": "uri",
+                        "examples": [
+                            null,
+                            "https://example.com/banner.webp"
+                        ]
+                    },
+
+                    "color": {
+                        "description": "Member color code (as a lowercase hexadecimal value, no leading \"#\")",
+                        "type": ["string", "null"],
+                        "pattern": "^[0-9a-f]{6}$",
+                        "examples": [
+                            "358a94"
+                        ]
+                    },
+
+                    "description": {
+                        "description": "Member description / bio",
+                        "type": ["string", "null"]
+                    },
+
+                    "birthday": {
+                        "description": "Member birthday (in YYYY-mm-dd format)",
+                        "type": ["string", "null"],
+                        "format": "date",
+                        "examples": [
+                            "1997-04-20",
+                            null
+                        ]
+                    },
+
+                    "pronouns": {
+                        "description": "Member pronouns",
+                        "type": ["string", "null"],
+                        "examples": [
+                            "they/them",
+                            null
+                        ]
+                    },
+
+                    "brackets": {
+                        "description": "List of \"brackets\" / \"proxy tags\" for this member",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "$ref": "#/$defs/bracket_unit"
+                        }
+                    },
+
+                    "created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "examples": [
+                            "2025-04-20T16:01:00+00:00"
+                        ]
+                    },
+
+                    "last_used": {
+                        "description": "The last time this member was used / proxied with",
+                        "type": ["string", "null"],
+                        "format": "date-time",
+                        "examples": [
+                            "2025-04-20T16:09:21+00:00"
+                        ]
+                    },
+
+                    "vendor": {
+                        "$ref": "#/$defs/vendor"
+                    }
+                }
+            }
+        },
+
+        "groups": {
+            "description": "Groups of webhook profiles",
+            "type": "array",
+            "items": {
+                "title": "MemberGroup",
+                "description": "A single group of webhook profiles",
+                "type": "object",
+                "unevaluatedProperties": false,
+                "required": [
+                    "id",
+                    "name",
+                    "members"
+                ],
+
+                "properties": {
+                    "id": {
+                        "description": "Unique ID for the group",
+                        "type": ["string", "number"],
+                        "examples": [
+                            "03b23d4b-93fb-408a-ab00-ec5bebb848db",
+                            123
+                        ]
+                    },
+
+                    "name": {
+                        "description": "Group name",
+                        "type": "string",
+                        "examples": [
+                            "groupName"
+                        ]
+                    },
+
+                    "display_name": {
+                        "description": "Group nickname / display name",
+                        "type": ["string", "null"],
+                        "examples": [
+                            null,
+                            "Group Display Name"
+                        ]
+                    },
+
+                    "avatar_url": {
+                        "description": "URL of group avatar/icon image",
+                        "type": ["string", "null"],
+                        "format": "uri",
+                        "examples": [
+                            "https://example.com/avatar.webp"
+                        ]
+                    },
+
+                    "banner_url": {
+                        "description": "URL of group banner image",
+                        "type": ["string", "null"],
+                        "format": "uri",
+                        "examples": [
+                            null,
+                            "https://example.com/banner.webp"
+                        ]
+                    },
+
+                    "color": {
+                        "description": "Group color code (as a lowercase hexadecimal value, no leading \"#\")",
+                        "type": ["string", "null"],
+                        "pattern": "^[0-9a-f]{6}$",
+                        "examples": [
+                            "358a94"
+                        ]
+                    },
+
+                    "description": {
+                        "description": "Group description / bio",
+                        "type": ["string", "null"]
+                    },
+
+                    "members": {
+                        "description": "The IDs of members of this group",
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "$ref": "#/properties/members/items/properties/id"
+                        }
+                    },
+
+                    "created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "examples": [
+                            "2025-04-20T16:01:00+00:00"
+                        ]
+                    },
+
+                    "vendor": {
+                        "$ref": "#/$defs/vendor"
+                    }
+                }
+            }
+        },
+
+        "vendor": {
+            "$ref": "#/$defs/vendor"
+        }
+    },
+
+    "$defs": {
+        "bracket_unit": {
+            "title": "MemberBracket",
+            "description": "A single \"bracket\" or \"proxy tag\", for matching the text of a message to a member to proxy with",
+
+            "type": "object",
+            "unevaluatedProperties": false,
+            "required": [
+                "prefix",
+                "suffix"
+            ],
+
+            "properties": {
+                "prefix": {
+                    "type": ["string", "null"]
+                },
+                "suffix": {
+                    "type": ["string", "null"]
+                },
+                "case_sensitive": {
+                    "description": "Whether this set of brackets should be matched in a case sensitive manner",
+                    "type": "boolean",
+                    "default": true
+                },
+                "vendor": {
+                    "$ref": "#/$defs/vendor"
+                }
+            },
+
+            "examples": [
+                { "prefix": "y:", "suffix": null, "case_sensitive": false },
+                { "prefix": "♫ ", "suffix": " ♪♬" },
+                { "prefix": null, "suffix": " -El", "case_sensitive": true }
+            ]
+        },
+
+        "vendor": {
+            "title": "VendorData",
+            "description": "Vendor-specific properties that do not mesh with the unified format",
+            "type": "object",
+            "properties": {
+                "pk": {
+                    "description": "PluralKit-specific info",
+                    "type": "object"
+                },
+                "tb": {
+                    "description": "Tupperbox-specific info",
+                    "type": "object"
+                },
+                "oc": {
+                    "description": "Octocon-specific info",
+                    "type": "object"
+                }
+            }
+        }
+    },
+
+    "examples": [
+        {
+            "$schema": "https://plural.horse/proxybot/export-v1.schema.json",
+            "metadata": {
+                "generator": "manual"
+            },
+            "profile": {
+                "name": "the Irises"
+            },
+            "members": [
+                {
+                    "id": 1,
+                    "name": "Miku",
+                    "color": "358a94",
+                    "pronouns": "ae/aer, she/her",
+                    "birthday": "1997-04-20",
+                    "description": "Blue hair, blue tie, hiding in your wifi~",
+                    "brackets": [{"prefix": "y:", "suffix": null}]
+                },
+                {
+                    "id": 2,
+                    "name": "Zaida",
+                    "color": "029fe8",
+                    "pronouns": "they/them",
+                    "description": "nya~ :3c",
+                    "brackets": [{"prefix": "Z:", "suffix": null}]
+                }
+            ],
+            "groups": [{
+                "id": 1,
+                "name": "TestGroup",
+                "members": [1, 2]
+            }]
+        }
+    ]
+}
