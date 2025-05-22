@@ -124,12 +124,7 @@
 
                 "properties": {
                     "id": {
-                        "description": "Unique ID for the member",
-                        "type": ["string", "number"],
-                        "examples": [
-                            "360130c3-8964-4f57-a46e-e973397bf309",
-                            312
-                        ]
+                        "$ref": "#/$defs/member_id"
                     },
 
                     "name": {
@@ -250,12 +245,7 @@
 
                 "properties": {
                     "id": {
-                        "description": "Unique ID for the group",
-                        "type": ["string", "number"],
-                        "examples": [
-                            "03b23d4b-93fb-408a-ab00-ec5bebb848db",
-                            123
-                        ]
+                        "$ref": "#/$defs/group_id"
                     },
 
                     "name": {
@@ -313,7 +303,7 @@
                         "type": "array",
                         "uniqueItems": true,
                         "items": {
-                            "$ref": "#/properties/members/items/properties/id"
+                            "$ref": "#/$defs/member_id"
                         }
                     },
 
@@ -338,6 +328,32 @@
     },
 
     "$defs": {
+        "member_id": {
+            "title": "MemberId",
+            "description": "A unique ID for a member within this export file",
+            "oneOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "number" }
+            ],
+            "examples": [
+                "360130c3-8964-4f57-a46e-e973397bf309",
+                312
+            ]
+        },
+
+        "group_id": {
+            "title": "GroupId",
+            "description": "A unique ID for a group within this export file",
+            "oneOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "number" }
+            ],
+            "examples": [
+                "03b23d4b-93fb-408a-ab00-ec5bebb848db",
+                123
+            ]
+        },
+
         "bracket_unit": {
             "title": "MemberBracket",
             "description": "A single \"bracket\" or \"proxy tag\", for matching the text of a message to a member to proxy with",
