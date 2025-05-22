@@ -8,9 +8,7 @@
     "required": [
         "$schema",
         "metadata",
-        "profile",
-        "members",
-        "groups"
+        "members"
     ],
 
     "properties": {
@@ -52,7 +50,7 @@
             "title": "Profile",
             "description": "Overarching user profile (i.e. a PluralKit \"system\")",
             "type": "object",
-            "unevaluatedProperties": false,
+
             "properties": {
                 "name": {
                     "description": "Profile name",
@@ -100,12 +98,18 @@
                     "examples": [
                         "2025-04-20T20:30:00+12:00"
                     ]
-                },
-
-                "vendor": {
-                    "$ref": "#/$defs/vendor"
                 }
-            }
+            },
+
+            "unevaluatedProperties": false,
+            "patternProperties": {
+                "^_": {
+                    "description": "Vendor-specific data",
+                    "type": "object"
+                }
+            },
+
+            "default": {}
         },
 
         "members": {
@@ -115,7 +119,7 @@
                 "title": "Member",
                 "description": "A single webhook profile (i.e. a PluralKit \"member\" / Tupperbox \"tupper\" / Octocon \"alter\")",
                 "type": "object",
-                "unevaluatedProperties": false,
+
                 "required": [
                     "id",
                     "name",
@@ -220,10 +224,14 @@
                         "examples": [
                             "2025-04-20T16:09:21+00:00"
                         ]
-                    },
+                    }
+                },
 
-                    "vendor": {
-                        "$ref": "#/$defs/vendor"
+                "unevaluatedProperties": false,
+                "patternProperties": {
+                    "^_": {
+                        "description": "Vendor-specific data",
+                        "type": "object"
                     }
                 }
             }
@@ -232,11 +240,13 @@
         "groups": {
             "description": "Groups of webhook profiles",
             "type": "array",
+            "default": [],
+
             "items": {
                 "title": "MemberGroup",
                 "description": "A single group of webhook profiles",
                 "type": "object",
-                "unevaluatedProperties": false,
+
                 "required": [
                     "id",
                     "name",
@@ -313,17 +323,25 @@
                         "examples": [
                             "2025-04-20T16:01:00+00:00"
                         ]
-                    },
+                    }
+                },
 
-                    "vendor": {
-                        "$ref": "#/$defs/vendor"
+                "unevaluatedProperties": false,
+                "patternProperties": {
+                    "^_": {
+                        "description": "Vendor-specific data",
+                        "type": "object"
                     }
                 }
             }
-        },
+        }
+    },
 
-        "vendor": {
-            "$ref": "#/$defs/vendor"
+    "unevaluatedProperties": false,
+    "patternProperties": {
+        "^_": {
+            "description": "Vendor-specific data",
+            "type": "object"
         }
     },
 
@@ -359,7 +377,6 @@
             "description": "A single \"bracket\" or \"proxy tag\", for matching the text of a message to a member to proxy with",
 
             "type": "object",
-            "unevaluatedProperties": false,
             "required": [
                 "prefix",
                 "suffix"
@@ -376,9 +393,14 @@
                     "description": "Whether this set of brackets should be matched in a case sensitive manner",
                     "type": "boolean",
                     "default": true
-                },
-                "vendor": {
-                    "$ref": "#/$defs/vendor"
+                }
+            },
+
+            "unevaluatedProperties": false,
+            "patternProperties": {
+                "^_": {
+                    "description": "Vendor-specific data",
+                    "type": "object"
                 }
             },
 
@@ -387,26 +409,6 @@
                 { "prefix": "♫ ", "suffix": " ♪♬" },
                 { "prefix": null, "suffix": " -El", "case_sensitive": true }
             ]
-        },
-
-        "vendor": {
-            "title": "VendorData",
-            "description": "Vendor-specific properties that do not mesh with the unified format",
-            "type": "object",
-            "properties": {
-                "pk": {
-                    "description": "PluralKit-specific info",
-                    "type": "object"
-                },
-                "tb": {
-                    "description": "Tupperbox-specific info",
-                    "type": "object"
-                },
-                "oc": {
-                    "description": "Octocon-specific info",
-                    "type": "object"
-                }
-            }
         }
     },
 
