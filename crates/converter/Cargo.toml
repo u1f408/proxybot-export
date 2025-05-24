@@ -1,0 +1,10 @@
+[package]
+name = "proxybot-export-converter"
+edition = "2024"
+
+[dependencies]
+proxybot-export = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+chrono = { workspace = true }

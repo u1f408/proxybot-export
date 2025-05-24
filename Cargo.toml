@@ -1,0 +1,40 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/*"
+]
+
+[workspace.dependencies]
+proxybot-export = { path = "." }
+proxybot-export-converter = { path = "./crates/converter" }
+
+serde = { version = "1", features = [ "derive" ] }
+serde_json = { version = "1" }
+thiserror = { version = "2" }
+prettyplease = { version = "0.2" }
+schemars = { version = "0.8" }
+syn = { version = "2.0" }
+typify = { version = "0.4" }
+chrono = { version = "0.4", features = [ "serde" ] }
+regress = { version = "0.10" }
+quote = { version = "1" }
+clap = { version = "4", features = [ "derive" ] }
+anyhow = { version = "1" }
+
+[package]
+name = "proxybot-export"
+edition = "2024"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+regress = { workspace = true }
+
+[build-dependencies]
+serde_json = { workspace = true }
+prettyplease = { workspace = true }
+schemars = { workspace = true }
+syn = { workspace = true }
+typify = { workspace = true }
+quote = { workspace = true }

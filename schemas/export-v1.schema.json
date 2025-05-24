@@ -19,7 +19,7 @@
         },
 
         "metadata": {
-            "title": "ExportMetadata",
+            "title": "Metadata",
             "description": "Metadata for this export",
 
             "type": "object",
@@ -79,12 +79,7 @@
                 },
 
                 "color": {
-                    "description": "Profile color code (as a lowercase hexadecimal value, no leading \"#\")",
-                    "type": ["string", "null"],
-                    "pattern": "^[0-9a-f]{6}$",
-                    "examples": [
-                        "358a94"
-                    ]
+                    "$ref": "#/$defs/color"
                 },
 
                 "description": {
@@ -101,15 +96,13 @@
                 }
             },
 
-            "unevaluatedProperties": false,
+            "additionalProperties": { "not": false },
             "patternProperties": {
                 "^_": {
                     "description": "Vendor-specific data",
                     "type": "object"
                 }
-            },
-
-            "default": {}
+            }
         },
 
         "members": {
@@ -168,12 +161,7 @@
                     },
 
                     "color": {
-                        "description": "Member color code (as a lowercase hexadecimal value, no leading \"#\")",
-                        "type": ["string", "null"],
-                        "pattern": "^[0-9a-f]{6}$",
-                        "examples": [
-                            "358a94"
-                        ]
+                        "$ref": "#/$defs/color"
                     },
 
                     "description": {
@@ -227,13 +215,7 @@
                     }
                 },
 
-                "unevaluatedProperties": false,
-                "patternProperties": {
-                    "^_": {
-                        "description": "Vendor-specific data",
-                        "type": "object"
-                    }
-                }
+                "additionalProperties": { "not": false }
             }
         },
 
@@ -243,7 +225,7 @@
             "default": [],
 
             "items": {
-                "title": "MemberGroup",
+                "title": "Group",
                 "description": "A single group of webhook profiles",
                 "type": "object",
 
@@ -295,12 +277,7 @@
                     },
 
                     "color": {
-                        "description": "Group color code (as a lowercase hexadecimal value, no leading \"#\")",
-                        "type": ["string", "null"],
-                        "pattern": "^[0-9a-f]{6}$",
-                        "examples": [
-                            "358a94"
-                        ]
+                        "$ref": "#/$defs/color"
                     },
 
                     "description": {
@@ -326,31 +303,19 @@
                     }
                 },
 
-                "unevaluatedProperties": false,
-                "patternProperties": {
-                    "^_": {
-                        "description": "Vendor-specific data",
-                        "type": "object"
-                    }
-                }
+                "additionalProperties": { "not": false }
             }
         }
     },
 
-    "unevaluatedProperties": false,
-    "patternProperties": {
-        "^_": {
-            "description": "Vendor-specific data",
-            "type": "object"
-        }
-    },
+    "additionalProperties": { "not": false },
 
     "$defs": {
         "member_id": {
             "title": "MemberId",
             "description": "A unique ID for a member within this export file",
             "oneOf": [
-                { "type": "string", "minLength": 1 },
+                { "type": "string" },
                 { "type": "number" }
             ],
             "examples": [
@@ -363,12 +328,21 @@
             "title": "GroupId",
             "description": "A unique ID for a group within this export file",
             "oneOf": [
-                { "type": "string", "minLength": 1 },
+                { "type": "string" },
                 { "type": "number" }
             ],
             "examples": [
                 "03b23d4b-93fb-408a-ab00-ec5bebb848db",
                 123
+            ]
+        },
+
+        "color": {
+            "description": "Color code (as a lowercase hexadecimal value, no leading \"#\")",
+            "type": "string",
+            "pattern": "^[0-9a-f]{6}$",
+            "examples": [
+                "358a94"
             ]
         },
 
@@ -396,13 +370,7 @@
                 }
             },
 
-            "unevaluatedProperties": false,
-            "patternProperties": {
-                "^_": {
-                    "description": "Vendor-specific data",
-                    "type": "object"
-                }
-            },
+            "additionalProperties": { "not": false },
 
             "examples": [
                 { "prefix": "y:", "suffix": null, "case_sensitive": false },
